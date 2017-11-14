@@ -111,6 +111,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="17ela010task1.c" />
+    <ClCompile Include="functions.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="functions.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="myfile.ppm" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
