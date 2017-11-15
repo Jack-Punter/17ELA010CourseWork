@@ -4,7 +4,7 @@
 #include <stdio.h>
 // define some preprocessor constants
 #define OUT_WIDTH 1920
-#define OUT_HEIGHT 1080
+#define OUT_HEIGHT 256
 #define PI 3.1415926f
 #define PI_2 3.1415926f / 2.0f
 

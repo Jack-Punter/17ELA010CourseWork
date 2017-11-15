@@ -3,6 +3,7 @@
 
 void PutPixel(FILE* outFile, int rgb)
 {
+	// 0xFF & (bitwise AND) is used to only take the value of the first byte of the array
 	// Print red component
 	fprintf(outFile, "%-3d ", 0xFF & rgb >> 16);
 	// Print green component
@@ -56,8 +57,18 @@ int CalculateYWithoutOffset(float radians, int harmonic)
 
 void DrawWaves(int* arr, int nHarmonics)
 {
-	int squareCol = RandomColor();
+	// Make the square wave green
+	int squareCol = rgbInt(0, 255, 0);
+
+	// Allocate memory for the colors of each harmonic
 	int* col = calloc(nHarmonics, sizeof(int));
+
+	// Assign each harmonic with a random color
+	for (int harmonic = 0; harmonic < nHarmonics; harmonic++)
+	{
+		col[harmonic] = RandomColor();
+	}
+
  	for (int x = 0; x < OUT_WIDTH; x++)
 	{
 		// Calculate the radians for the sin once per X
@@ -65,22 +76,28 @@ void DrawWaves(int* arr, int nHarmonics)
 		float radians = RADIANS(degrees);
 		int squareY = 0;
 
+		// Loop through each harmonic calculating the Y positions and then add that to the Y position of the square wave
 		for (int harmonic = 1; harmonic <= nHarmonics; harmonic++)
 		{
-			col[harmonic - 1] = col[harmonic - 1] <= 0 ? RandomColor() : col[harmonic - 1];
 			int y = CalculateYWithoutOffset(radians, harmonic);
 			squareY += y;
+			// Offset the y value to centre the harmonic wave and plot
 			y += OUT_HEIGHT / 2;
 			arr[y * OUT_WIDTH + x] = col[harmonic - 1];
 		}
+		// Multiply the sum of the harmonic waves by 4/PI as stated by the equation given
 		squareY *= (int)(4.0f / PI);
+		// Offset the y value to centre the square wave and plot
 		squareY += OUT_HEIGHT / 2;
 		arr[squareY * OUT_WIDTH + x] = squareCol;
 	}
+	// Free the memory allocated for the wave colors
 	free(col);
+	col = NULL;
 }
 
 int rgbInt(unsigned char r, unsigned char g, unsigned char b)
 {
+	// Use bitwise OR to combine the 3 0-255 values into a single int
 	return r << 16 | g << 8 | b;
 }
