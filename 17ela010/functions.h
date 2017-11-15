@@ -19,9 +19,9 @@ void DrawPixelArray(FILE* outFile, int* arr);
 int CalculateYWithoutOffset(float degrees, int harmonic);
 void DrawWaves(int* arr, int nHarmonics);
 
-//Functions to generate a random colors
-unsigned char RandomColorComponent();
-int RandomColor();
+//Functions to generate a random colours
+unsigned char RandomColourComponent();
+int RandomColour();
 
-// Function to compact color components into a single int
+// Function to compact colour components into a single int
 int rgbInt(unsigned char r, unsigned char g, unsigned char b);

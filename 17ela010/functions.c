@@ -14,22 +14,22 @@ void PutPixel(FILE* outFile, int rgb)
 	fprintf(outFile, "\t");
 }
 
-unsigned char RandomColorComponent()
+unsigned char RandomColourComponent()
 {
 	// return a random number between 0 and 255
 	int random = rand();
 	return random % 256;
 }
 
-int RandomColor()
+int RandomColour()
 {
-	//return a random color int
-	return rgbInt(RandomColorComponent(), RandomColorComponent(), RandomColorComponent());
+	//return a random colour int
+	return rgbInt(RandomColourComponent(), RandomColourComponent(), RandomColourComponent());
 }
 
 void DrawPixelArray(FILE* outFile, int* arr)
 {
-	// loop through the array an write each color to the file
+	// loop through the array an write each colour to the file
 	for (int y = 0; y < OUT_HEIGHT; y++)
 	{
 		for (int x = 0; x < OUT_WIDTH; x++)
@@ -60,13 +60,13 @@ void DrawWaves(int* arr, int nHarmonics)
 	// Make the square wave green
 	int squareCol = rgbInt(0, 255, 0);
 
-	// Allocate memory for the colors of each harmonic
+	// Allocate memory for the colours of each harmonic
 	int* col = calloc(nHarmonics, sizeof(int));
 
-	// Assign each harmonic with a random color
+	// Assign each harmonic with a random colour
 	for (int harmonic = 0; harmonic < nHarmonics; harmonic++)
 	{
-		col[harmonic] = RandomColor();
+		col[harmonic] = RandomColour();
 	}
 
  	for (int x = 0; x < OUT_WIDTH; x++)
@@ -91,7 +91,7 @@ void DrawWaves(int* arr, int nHarmonics)
 		squareY += OUT_HEIGHT / 2;
 		arr[squareY * OUT_WIDTH + x] = squareCol;
 	}
-	// Free the memory allocated for the wave colors
+	// Free the memory allocated for the wave colours
 	free(col);
 	col = NULL;
 }
