@@ -2,13 +2,26 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 #include <stdio.h>
-// define some preprocessor macros to use for the array dimensions
-#define OUT_WIDTH 256
-#define OUT_HEIGHT 128
-#define OUT_DEPTH 3
+// define some preprocessor constants
+#define OUT_WIDTH 1920
+#define OUT_HEIGHT 1080
+#define PI 3.1415926f
+#define PI_2 3.1415926f / 2.0f
+
+// Define preproccessor macro to convert degrees to radians
+#define RADIANS(x) x*PI/180.0f
 
 //Functions to draw to the pixels to the file
-void PutPixel(FILE* outFile, int r, int g, int b);
+void PutPixel(FILE* outFile, int rgb);
 void DrawPixelArray(FILE* outFile, int* arr);
-//Function to generate a radom color component (number 0-255)
-int RandomColorComponent();
+
+//Functions to draw to the array
+int CalculateYWithoutOffset(float degrees, int harmonic);
+void DrawWaves(int* arr, int nHarmonics);
+
+//Functions to generate a random colors
+unsigned char RandomColorComponent();
+int RandomColor();
+
+// Function to compact color components into a single int
+int rgbInt(unsigned char r, unsigned char g, unsigned char b);

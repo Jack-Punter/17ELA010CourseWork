@@ -2,32 +2,30 @@
 
 #include <stdio.h>
 #include "functions.h"
+#include <math.h>
 
 void main()
 {
 	/*
-	Create the header for the ppm file headder,
-	declare an array of pixels the size of the output picture
-	open the file that we will write the image to 
+	Create the header for the ppm file header,
+	declare an array of pixels the size of the output picture defulting all values to 0,
+	declare the poiter for the file
 	*/
 	char pmmHeader[] = "P3\n%d %d\n255\n";
-	int pixels[OUT_WIDTH * OUT_HEIGHT * OUT_DEPTH];
-	FILE *pfile = fopen("myfile.ppm", "w");
+	int* pixels = calloc(OUT_WIDTH * OUT_HEIGHT, sizeof(int));
+	int numHarmonics = 5000;
+	FILE *pfile = NULL;
 
-	//Loop through the array and fill each colour component with a random value from 0 - 255
-	for (int y = 0; y < OUT_HEIGHT; y++)
+	DrawWaves(pixels, numHarmonics);
+	// Draw x axis in white
+	for (int x = 0; x < OUT_WIDTH; x++)
 	{
-		for (int x = 0; x < OUT_WIDTH; x++)
-		{
-			for (int z = 0; z < OUT_DEPTH; z++)
-			{
-				pixels[OUT_DEPTH * (x + y * OUT_WIDTH) + z] = RandomColorComponent();
-			}
-		}
+		pixels[(OUT_HEIGHT / 2) * OUT_WIDTH + x] = rgbInt(255, 255, 255);
 	}
-
-	// Write to the file and close the file
+	// Open, Write to and close the file
+	pfile = fopen("myfile.ppm", "w");
 	fprintf(pfile, pmmHeader, OUT_WIDTH, OUT_HEIGHT);
 	DrawPixelArray(pfile, pixels);
 	fclose(pfile);
+	free(pixels);
 }
