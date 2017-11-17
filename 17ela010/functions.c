@@ -3,7 +3,8 @@
 
 void PutPixel(FILE* outFile, int rgb)
 {
-	// 0xFF & (bitwise AND) is used to only take the value of the first byte of the array
+	// 0xFF & (bitwise AND) is used to only take the value of the first byte of the integer
+	// -3 Used to right align the numbers for readabilty of the ppm file, does not affect actuall image
 	// Print red component
 	fprintf(outFile, "%-3d ", 0xFF & rgb >> 16);
 	// Print green component
@@ -27,20 +28,20 @@ int RandomColour()
 	return rgbInt(RandomColourComponent(), RandomColourComponent(), RandomColourComponent());
 }
 
-void DrawPixelArray(FILE* outFile, int* arr)
+void DrawPixelArray(FILE* outFile, int* arr, int arrWidth, int arrHeight)
 {
 	// loop through the array an write each colour to the file
-	for (int y = 0; y < OUT_HEIGHT; y++)
+	for (int y = 0; y < arrHeight; y++)
 	{
-		for (int x = 0; x < OUT_WIDTH; x++)
+		for (int x = 0; x < arrWidth; x++)
 		{
-			PutPixel(outFile, arr[y * OUT_WIDTH + x]);
+			PutPixel(outFile, arr[y * arrWidth + x]);
 		}
 		fprintf(outFile, "\n");
 	}
 }
 
-int CalculateYWithoutOffset(float radians, int harmonic)
+int CalculateYWithoutOffset(float radians, int harmonic, int outHeight)
 {
 	//Calculate the harmonc factor to be used in the calculation of the y values
 	float k = 2 * harmonic - 1;
@@ -52,10 +53,10 @@ int CalculateYWithoutOffset(float radians, int harmonic)
 	- minus a buffer to acomodate for peeks in the square wave being greater than the first harmonic
 	Then add half the height of the output image to move the wave to be centered in the middle of the output image
 	*/
-	return (int)(((OUT_HEIGHT / 2.0f - 10) * sinf(PI + radians * k)) / k);
+	return (int)(((outHeight / 2.0f - 10) * sinf(PI + radians * k)) / k);
 }
 
-void DrawWaves(int* arr, int nHarmonics)
+void DrawWaves(int nHarmonics, int* arr, int arrWidth, int arrHeight)
 {
 	// Make the square wave green
 	int squareCol = rgbInt(0, 255, 0);
@@ -69,27 +70,27 @@ void DrawWaves(int* arr, int nHarmonics)
 		col[harmonic] = RandomColour();
 	}
 
- 	for (int x = 0; x < OUT_WIDTH; x++)
+ 	for (int x = 0; x < arrWidth; x++)
 	{
 		// Calculate the radians for the sin once per X
-		float degrees = ((float)x / (float)OUT_WIDTH) * 720;
+		float degrees = ((float)x / (float)arrWidth) * 720;
 		float radians = RADIANS(degrees);
 		int squareY = 0;
 
 		// Loop through each harmonic calculating the Y positions and then add that to the Y position of the square wave
 		for (int harmonic = 1; harmonic <= nHarmonics; harmonic++)
 		{
-			int y = CalculateYWithoutOffset(radians, harmonic);
+			int y = CalculateYWithoutOffset(radians, harmonic, arrHeight);
 			squareY += y;
 			// Offset the y value to centre the harmonic wave and plot
-			y += OUT_HEIGHT / 2;
-			arr[y * OUT_WIDTH + x] = col[harmonic - 1];
+			y += arrHeight / 2;
+			arr[y * arrWidth + x] = col[harmonic - 1];
 		}
 		// Multiply the sum of the harmonic waves by 4/PI as stated by the equation given
 		squareY *= (int)(4.0f / PI);
 		// Offset the y value to centre the square wave and plot
-		squareY += OUT_HEIGHT / 2;
-		arr[squareY * OUT_WIDTH + x] = squareCol;
+		squareY += arrHeight / 2;
+		arr[squareY * arrWidth + x] = squareCol;
 	}
 	// Free the memory allocated for the wave colours
 	free(col);

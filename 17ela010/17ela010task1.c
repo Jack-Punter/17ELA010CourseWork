@@ -6,25 +6,27 @@
 
 void main()
 {
-	int nHarmonics = 5;
+	int outWidth = 1920;
+	int outHeight = 1080;
+	int nHarmonics = 10;
 	//Create the header for the ppm file header,
 	char pmmHeader[] = "P3\n%d %d\n255\n";
 	//declare an array of pixels the size of the output picture defulting all values to 0,
-	int* pixels = calloc(OUT_WIDTH * OUT_HEIGHT, sizeof(int));
+	int* pixels = calloc(outWidth * outHeight, sizeof(int));
 	//declare the poiter for the file
 	FILE *pfile = NULL;
 
-	DrawWaves(pixels, nHarmonics);
+	DrawWaves(nHarmonics, pixels, outWidth, outHeight);
 	// Draw x axis in white
-	for (int x = 0; x < OUT_WIDTH; x++)
+	for (int x = 0; x < outWidth; x++)
 	{
-		pixels[(OUT_HEIGHT / 2) * OUT_WIDTH + x] = rgbInt(255, 255, 255);
+		pixels[(outHeight / 2) * outWidth + x] = rgbInt(255, 255, 255);
 	}
 	// Open the file
 	pfile = fopen("myfile.ppm", "w");
 	// Write to the file
-	fprintf(pfile, pmmHeader, OUT_WIDTH, OUT_HEIGHT);
-	DrawPixelArray(pfile, pixels);
+	fprintf(pfile, pmmHeader, outWidth, outHeight);
+	DrawPixelArray(pfile, pixels, outWidth, outHeight);
 	// Close the file and set the pointer to NULL so it cannot be accessed later
 	fclose(pfile);
 	pfile = NULL;
