@@ -13,6 +13,8 @@ void main()
 	int outHeight;
 	int nHarmonics;
 	char fileName[32];
+	FILE* pfile = NULL;
+	int* pixels = NULL;
 
 	// Get the user input for the number of harmonics to use
 	printf("Input -1 to exit the program.\nInput the number of harmonics you would like to use to generate the square wave: ");
@@ -32,7 +34,7 @@ void main()
 
 		printf("Allocating memory for pixel array...\n");
 		//declare an array of pixels the size of the output picture defulting all values to 0,
-		int* pixels = calloc(outWidth * outHeight, sizeof(int));
+		pixels = calloc(outWidth * outHeight, sizeof(int));
 
 		printf("Calculating and drawing waves to the array...\n");
 		DrawWaves(nHarmonics, pixels, outWidth, outHeight);
@@ -45,7 +47,7 @@ void main()
 
 		// Open the file
 		printf("Opening and writing to file...\n");
-		FILE *pfile = fopen(fileName, "w");
+		pfile = fopen(fileName, "w");
 		// Write to the file
 		fprintf(pfile, pmmHeader, outWidth, outHeight);
 		DrawPixelArray(pfile, pixels, outWidth, outHeight);
