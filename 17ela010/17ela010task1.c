@@ -43,12 +43,14 @@ void main()
 			// Get the user to input the file to write to
 			printf("Input the name of the file you would like to draw to (DO NOT USE SPACES): ");
 			scanf("%s", &fileName);
+			strcat(fileName, ".ppm");
 
 			// Open the file
 			printf("Opening the file...\n");
 			pfile = fopen(fileName, "w");
+			
 			//Check opening the file worked
-			if (pfile = NULL);
+			if (pfile == NULL)
 			{
 				// if it didnt work return an error to the user asking them to input a different file name
 				printf("Something went wrong opening the file\nTry A different file name using NO WHITESPACE\n");
