@@ -1,3 +1,10 @@
+/*
+17ELA010 C Coursework
+
+Author: B726243, Jack Punter
+Date: 21-11-17
+*/
+
 #include "functions.h"
 #include <math.h>
 
