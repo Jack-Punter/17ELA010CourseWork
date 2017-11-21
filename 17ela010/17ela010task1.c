@@ -87,7 +87,7 @@ void main()
 		printf("File Generated!\n\n");
 
 		// Get the user input for the number of harmonics to use
-		printf("Input -1 to exit the program.\nInput the number of harmonics you would like to use to generate the square wave: ");
+		printf("Input 0 or negative to exit the program.\nInput the number of harmonics you would like to use to generate the square wave: ");
 		scanf("%d", &nHarmonics);
 	}
 }
