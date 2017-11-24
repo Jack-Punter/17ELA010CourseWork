@@ -16,6 +16,13 @@ Date: 21-11-17
 // Define preproccessor macro to convert degrees to radians
 #define RADIANS(x) x*PI/180.0f
 
+// Enumeration to represent a true or false value - Boolean
+enum bool
+{
+	false,
+	true
+};
+
 //Functions to draw to the pixels to the ppm file
 void PutPixel(FILE* outFile, int rgb);
 void DrawPixelArray(FILE* outFile, int* arr, int arrWidth, int arrHeight);
