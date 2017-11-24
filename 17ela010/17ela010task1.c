@@ -2,6 +2,7 @@
 
 /*
 17ELA010 C Coursework
+https://github.com/JackPunter/17ELA010CourseWork
 
 Drawing sine wave harmonics and square wave acheived by summing the waves
 
