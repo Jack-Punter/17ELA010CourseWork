@@ -1,5 +1,6 @@
 #pragma once
 #define _CRT_SECURE_NO_WARNINGS
+#include <stdlib.h>
 
 /*
 17ELA010 C Coursework
@@ -25,16 +26,22 @@ enum bool
 };
 
 //Functions to draw to the pixels to the ppm file
-void PutPixel(FILE* outFile, int rgb);
-void DrawPixelArray(FILE* outFile, int* arr, int arrWidth, int arrHeight);
+void PutPixel(FILE* outFile, const int rgb);
+void DrawPixelArray(FILE* outFile, const int* arr, const int arrWidth, const int arrHeight);
 
 //Functions to draw to the array
-int CalculateYWithoutOffset(float degrees, int harmonic, int outHeight);
-void DrawWaves(int nHarmonics, int* arr, int arrWidth, int arrHeight);
+int CalculateYWithoutOffset(const float radians, const int harmonic, const int outHeight);
+void DrawWaves(const int nHarmonics, int* arr, const int arrWidth, const int arrHeight);
 
 //Functions to generate a random colours
 unsigned char RandomColourComponent();
 int RandomColour();
 
 // Function to compact colour components into a single int
-int rgbInt(unsigned char r, unsigned char g, unsigned char b);
+int rgbInt(const unsigned char r, const unsigned char g, const unsigned char b);
+
+// User input functions
+// Gets a number < max
+void getNumberMax(int* output, char* errorBuffer, const char* prompt, const int max);
+// Gets a number < max and > 0
+void getPositiveNumberMax(int* output, char* errorBuffer, const char* prompt, const int max);

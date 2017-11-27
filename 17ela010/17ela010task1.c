@@ -16,63 +16,53 @@ Date:	21-11-17
 
 void main()
 {
-	//Create the header for the ppm file header,
+	//Create the header for the ppm file header
 	char pmmHeader[] = "P3\n%d %d\n255\n";
-	// Create variables for user to declare;
+	int maxFileWidth = 10000;
+	int maxFileHeight = 10000;
+	int maxHarmonics = 10000;
+	// Create variables for user to declare
 	int outWidth;
 	int outHeight;
 	int nHarmonics;
 	char fileName[32];
+	// Create the pointers to the pixel array and the file
 	FILE* pfile = NULL;
 	int* pixels = NULL;
+	// Declare and initialise an array to store any invalid inputs that the user writes.
 	char inputErrorBuffer[64] = { 0 };
 	// Boolean to be used for input stages to ensure the user inputs valid data
 	enum bool valid;
 	
-	// Get the user input for the number of harmonics to use
-	do
-	{
-		// Set the initial state of the valid bool to be true
-		valid = true;
-		// Prompt the user for input
-		printf("Input 0 or negative to exit the program.\nInput the number of harmonics you would like to use to generate the square wave: ");
-		// Get the input and check if the return code is 0 or negative (invalid input)
-		if (scanf("%d", &nHarmonics) <= 0)
-		{
-			// If it was read the input into a string and return an error to the user
-			scanf("%s", &inputErrorBuffer);
-			printf("Your input of:\n\"%s\"\nis invalid. Please re-enter\n\n", inputErrorBuffer);
-			// Set the valid bool to false so that the user is prompted for input again
-			valid = false;
-		}
-	} while (valid == false);
+	// Get a number for the number of harmonics to use
+	getNumberMax
+	(
+		&nHarmonics,
+		inputErrorBuffer,
+		"Input 0 or negative to exit the program.\nInput the number of harmonics you would like to use: ", 
+		maxHarmonics
+	);
 
-	while (nHarmonics > 0)
+	while (nHarmonics >= 0)
 	{
-		// Get dimensiosn of the output image from the user
-		do
-		{	
-			valid = true;
-			printf("Input the width of the output image: ");
-			if (scanf("%d", &outWidth) <= 0)
-			{
-				scanf("%s", &inputErrorBuffer);
-				printf("Your input of:\n\"%s\"\nis invalid. Please re-enter\n\n", inputErrorBuffer);
-				valid = false;
-			}
-		} while (valid == false);
+		// Get dimensions of the output image from the user
+		// Get the width of the image
+		getPositiveNumberMax
+		(
+			&outWidth,
+			inputErrorBuffer,
+			"Input the width of the output image: ",
+			maxFileWidth
+		);
 
-		do
-		{
-			valid = true;
-			printf("Input the height of the output image: ");
-			if (scanf("%d", &outHeight) <= 0)
-			{
-				scanf("%s", &inputErrorBuffer);
-				printf("Your input of:\n\"%s\"\nis invalid. Please re-enter\n\n", inputErrorBuffer);
-				valid = false;
-			}
-		} while(valid == false);
+		// Get the height of the image
+		getPositiveNumberMax
+		(
+			&outHeight,
+			inputErrorBuffer,
+			"Input the hight of the output image: ",
+			maxFileHeight
+		);
 
 		do
 		{
@@ -86,20 +76,19 @@ void main()
 			printf("Opening the file...\n");
 			pfile = fopen(fileName, "w");
 
-			//Check opening the file worked
+			// Check if opening the file failed
 			if (pfile == NULL)
 			{
-				// if it didnt work return an error to the user asking them to input a different file name
-				printf("Something went wrong opening the file\nTry A different file name using NO WHITESPACE\n");
+				printf("Something went wrong opening the file\nTry a different file name using NO WHITESPACE\n");
 				valid = false;
 			}
-			// loop until opening the file was successful
 		} while (valid == false);
 
 		printf("Allocating memory for pixel array...\n");
-		//declare an array of pixels the size of the output picture defulting all values to 0,
+		// Allocate an array of pixels the size of the output image (defult values will be 0)
 		pixels = calloc(outWidth * outHeight, sizeof(int));
 
+		// Draw to the pixel array
 		printf("Calculating and drawing waves to the array...\n");
 		DrawWaves(nHarmonics, pixels, outWidth, outHeight);
 		// Draw x axis in white
@@ -114,6 +103,7 @@ void main()
 		fprintf(pfile, pmmHeader, outWidth, outHeight);
 		DrawPixelArray(pfile, pixels, outWidth, outHeight);
 
+		// Memory cleanup
 		printf("Closing file and freeing memory...\n");
 		// Close the file and set the pointer to NULL so it cannot be accessed later
 		fclose(pfile);
@@ -123,17 +113,12 @@ void main()
 		pixels = NULL;
 		printf("File Generated!\n\n");
 
-		// Get the user input for the number of harmonics to use
-		do
-		{
-			valid = true;
-			printf("Input 0 or negative to exit the program.\nInput the number of harmonics you would like to use to generate the square wave: ");
-			if (scanf("%d", &nHarmonics) <= 0)
-			{
-				scanf("%s", &inputErrorBuffer);
-				printf("Your input of:\n\"%s\"\nis invalid. Please re-enter\n\n", inputErrorBuffer);
-				valid = false;
-			}
-		} while (valid == false);
+		getNumberMax
+		(
+			&nHarmonics,
+			inputErrorBuffer,
+			"Input 0 or negative to exit the program.\nInput the number of harmonics you would like to use: ",
+			maxHarmonics
+		);
 	}
 }

@@ -9,7 +9,7 @@ Date: 21-11-17
 #include "functions.h"
 #include <math.h>
 
-void PutPixel(FILE* outFile, int rgb)
+void PutPixel(FILE* outFile, const int rgb)
 {
 	// 0xFF & (bitwise AND) is used to only take the value of the first byte of the integer
 	// -3 Used to right align the numbers for readabilty of the ppm file, does not affect actuall image
@@ -36,7 +36,7 @@ int RandomColour()
 	return rgbInt(RandomColourComponent(), RandomColourComponent(), RandomColourComponent());
 }
 
-void DrawPixelArray(FILE* outFile, int* arr, int arrWidth, int arrHeight)
+void DrawPixelArray(FILE* outFile, const int* arr, const int arrWidth, const int arrHeight)
 {
 	// loop through the array an write each colour to the file
 	for (int y = 0; y < arrHeight; y++)
@@ -49,10 +49,10 @@ void DrawPixelArray(FILE* outFile, int* arr, int arrWidth, int arrHeight)
 	}
 }
 
-int CalculateYWithoutOffset(float radians, int harmonic, int outHeight)
+int CalculateYWithoutOffset(const float radians, const int harmonic, const int outHeight)
 {
-	//Calculate the harmonc factor to be used in the calculation of the y values
-	float k = 2 * harmonic - 1;
+	//Calculate the harmonic factor to be used in the calculation of the y values
+	int k = 2 * harmonic - 1;
 
 	/* Calculate y value
 	Add PI to the angle to translate the graph so it draws properly
@@ -64,7 +64,7 @@ int CalculateYWithoutOffset(float radians, int harmonic, int outHeight)
 	return (int)(((outHeight / 2.0f - 10) * sinf(PI + radians * k)) / k);
 }
 
-void DrawWaves(int nHarmonics, int* arr, int arrWidth, int arrHeight)
+void DrawWaves(const int nHarmonics, int* arr, const int arrWidth, const int arrHeight)
 {
 	// Make the square wave green
 	int squareCol = rgbInt(0, 255, 0);
@@ -105,8 +105,63 @@ void DrawWaves(int nHarmonics, int* arr, int arrWidth, int arrHeight)
 	col = NULL;
 }
 
-int rgbInt(unsigned char r, unsigned char g, unsigned char b)
+int rgbInt(const unsigned char r, const unsigned char g, const unsigned char b)
 {
 	// Use bitwise OR to combine the 3 0-255 values into a single int
 	return r << 16 | g << 8 | b;
+}
+
+void getNumberMax(int* output, char* errorBuffer, const char* prompt, const int max)
+{
+	// Double to get user input, will be cast to an int
+	// Allow the user to input a double without reading by multiple scanfs
+	double dInput;
+	enum bool valid;
+	// Get the user input for the number of harmonics to use
+	do
+	{
+		// Set the initial state of the valid bool to be true
+		valid = true;
+		// Prompt the user for an input
+		printf(prompt);
+		// Get the input and check if the return code from scanf is 0 or negative (invalid input)
+		if (scanf("%lf", &dInput) <= 0)
+		{
+			// If it was, read the input into a string and return an error to the user
+			scanf("%s", errorBuffer);
+			printf("\nYour input of:\n\"%s\"\nis invalid. Please re-enter\n\n", errorBuffer);
+			// Set the valid bool to false so that the user is prompted for input again
+			valid = false;
+		}
+
+		// Validate that the user has entered a sensible number of harmonics
+		if (dInput > max)
+		{
+			printf("Input must not be greater than %d", max);
+			valid = false;
+		}
+		// If they did, cast the input to an integer and set nHarmonics to the input
+		else
+		{
+			*output = (int)dInput;
+		}
+		// Loop until the input was all valid
+	} while (valid == false);
+}
+
+void getPositiveNumberMax(int* output, char* errorBuffer, const char* prompt, const int max)
+{
+	enum bool valid = true;
+	
+	do
+	{
+		// Gets a number
+		getNumberMax(output, errorBuffer, prompt, max);
+		// if the number is 0 or negative it is an invalid input
+		if (output <= 0)
+		{
+			printf("Your input must be positive and non-zero.");
+			valid = false;
+		}
+	} while (valid == false);
 }
