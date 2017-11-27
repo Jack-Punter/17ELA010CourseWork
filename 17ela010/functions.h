@@ -15,9 +15,6 @@ Date: 21-11-17
 // Define some preprocessor constants
 #define PI 3.14159265358979323846f
 
-// Define preproccessor macro to convert degrees to radians
-#define RADIANS(x) x*PI/180.0f
-
 // Enumeration to represent a true or false value - Boolean
 enum bool
 {

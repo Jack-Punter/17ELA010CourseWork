@@ -28,11 +28,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="myfile.ppm">
-      <Filter>Resource Files</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <Text Include="Notes.txt">
       <Filter>Resource Files</Filter>
     </Text>

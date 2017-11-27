@@ -118,9 +118,6 @@
     <ClInclude Include="functions.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="myfile.ppm" />
-  </ItemGroup>
-  <ItemGroup>
     <Text Include="Notes.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

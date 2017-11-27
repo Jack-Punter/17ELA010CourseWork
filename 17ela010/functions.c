@@ -81,8 +81,7 @@ void DrawWaves(const int nHarmonics, int* arr, const int arrWidth, const int arr
  	for (int x = 0; x < arrWidth; x++)
 	{
 		// Calculate the radians for the sin once per X
-		float degrees = ((float)x / (float)arrWidth) * 720;
-		float radians = RADIANS(degrees);
+		float radians = ((float)x / (float)arrWidth) * 4 * PI;
 		int squareY = 0;
 
 		// Loop through each harmonic calculating the Y positions and then add that to the Y position of the square wave
