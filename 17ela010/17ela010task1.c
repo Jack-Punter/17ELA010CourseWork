@@ -31,9 +31,7 @@ void main()
 	int* pixels = NULL;
 	// Declare and initialise an array to store any invalid inputs that the user writes.
 	char inputErrorBuffer[64] = { 0 };
-	// Boolean to be used for input stages to ensure the user inputs valid data
-	enum bool valid;
-	
+
 	// Get a number for the number of harmonics to use
 	getNumberMax
 	(
@@ -64,6 +62,7 @@ void main()
 			maxFileHeight
 		);
 
+		enum bool valid;
 		do
 		{
 			valid = true;
@@ -72,15 +71,27 @@ void main()
 			scanf("%s", &fileName);
 			strcat(fileName, ".ppm");
 
-			// Open the file
-			printf("Opening the file...\n");
-			pfile = fopen(fileName, "w");
-
-			// Check if opening the file failed
-			if (pfile == NULL)
+			// Open the file in read mode to see if it exists
+			pfile = fopen(fileName, "r");
+			if (pfile != NULL)
 			{
-				printf("Something went wrong opening the file\nTry a different file name using NO WHITESPACE\n");
+				// It does exist so ask the user to choose a new name for the output file
+				printf("That file already exists, please choose another filename\n");
+				fclose(pfile);
 				valid = false;
+			}
+			else 
+			{
+				// Open the file to write to
+				printf("Opening the file to write to...\n");
+				pfile = fopen(fileName, "w");
+
+				// Check if opening the file failed
+				if (pfile == NULL)
+				{
+					printf("Something went wrong opening the file\nTry a different file name\n");
+					valid = false;
+				}
 			}
 		} while (valid == false);
 
