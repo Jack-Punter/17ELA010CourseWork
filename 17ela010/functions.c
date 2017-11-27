@@ -136,7 +136,7 @@ void getNumberMax(int* output, char* errorBuffer, const char* prompt, const int 
 		// Validate that the user has entered a sensible number of harmonics
 		if (dInput > max)
 		{
-			printf("Input must not be greater than %d", max);
+			printf("Input must not be greater than %d\n", max);
 			valid = false;
 		}
 		// If they did, cast the input to an integer and set nHarmonics to the input
