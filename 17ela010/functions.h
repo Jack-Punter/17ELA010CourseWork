@@ -42,3 +42,5 @@ int rgbInt(const unsigned char r, const unsigned char g, const unsigned char b);
 void getNumberMax(int* output, char* errorBuffer, const char* prompt, const int max);
 // Gets a number < max and > 0
 void getPositiveNumberMax(int* output, char* errorBuffer, const char* prompt, const int max);
+// Wrapper function to get number of harmonics without having to use prompt
+void getHarmonics(int* output, char* errorBuffer, const int max);

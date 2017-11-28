@@ -164,3 +164,10 @@ void getPositiveNumberMax(int* output, char* errorBuffer, const char* prompt, co
 		}
 	} while (valid == false);
 }
+
+void getHarmonics(int* output, char* errorBuffer, const int max)
+{
+	getNumberMax(output, errorBuffer,
+		"Input 0 or negative to exit the program.\nInput the number of harmonics you would like to use: ",
+		max);
+}

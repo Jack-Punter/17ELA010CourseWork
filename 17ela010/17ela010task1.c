@@ -32,35 +32,27 @@ void main()
 	// Declare and initialise an array to store any invalid inputs that the user writes.
 	char inputErrorBuffer[64] = { 0 };
 
-	// Get a number for the number of harmonics to use
-	getNumberMax
-	(
-		&nHarmonics,
-		inputErrorBuffer,
-		"Input 0 or negative to exit the program.\nInput the number of harmonics you would like to use: ", 
-		maxHarmonics
-	);
-
-	while (nHarmonics >= 0)
+	// Get number of harmonics to use, if that number is greater than 0 run the inner code,
+	// at the end of the loop get the number of harmonics to use again, check if it is greater than 0
+	// if not, exit the loop
+	for (getHarmonics(&nHarmonics, inputErrorBuffer, maxHarmonics);
+		nHarmonics > 0;
+		getHarmonics(&nHarmonics, inputErrorBuffer, maxHarmonics))
 	{
 		// Get dimensions of the output image from the user
 		// Get the width of the image
-		getPositiveNumberMax
-		(
+		getPositiveNumberMax(
 			&outWidth,
 			inputErrorBuffer,
 			"Input the width of the output image: ",
-			maxFileWidth
-		);
+			maxFileWidth);
 
 		// Get the height of the image
-		getPositiveNumberMax
-		(
+		getPositiveNumberMax(
 			&outHeight,
 			inputErrorBuffer,
-			"Input the hight of the output image: ",
-			maxFileHeight
-		);
+			"Input the height of the output image: ",
+			maxFileHeight);
 
 		enum bool valid;
 		do
@@ -72,6 +64,7 @@ void main()
 			strcat(fileName, ".ppm");
 
 			// Open the file in read mode to see if it exists
+			printf("Opening the file to check if it already exists...\n");
 			pfile = fopen(fileName, "r");
 			if (pfile != NULL)
 			{
@@ -80,7 +73,7 @@ void main()
 				fclose(pfile);
 				valid = false;
 			}
-			else 
+			else
 			{
 				// Open the file to write to
 				printf("Opening the file to write to...\n");
@@ -123,13 +116,5 @@ void main()
 		free(pixels);
 		pixels = NULL;
 		printf("File Generated!\n\n");
-
-		getNumberMax
-		(
-			&nHarmonics,
-			inputErrorBuffer,
-			"Input 0 or negative to exit the program.\nInput the number of harmonics you would like to use: ",
-			maxHarmonics
-		);
 	}
 }
